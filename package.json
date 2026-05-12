@@ -4,7 +4,7 @@
   "description": "Online Resume Builder API",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "dev": "nodemon index.js"
   },
   "dependencies": {
