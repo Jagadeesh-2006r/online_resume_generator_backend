@@ -6,7 +6,11 @@ const { Pool } = require("pg");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "online-resume-generator-frontend-ql.vercel.app",
+  })
+);
 app.use(express.json());
 
 const pool = new Pool({
