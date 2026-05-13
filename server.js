@@ -81,6 +81,56 @@ app.get("/api/auth/me", (req, res) => {
   });
 });
 
+app.get("/api/resumes", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM resumes");
+
+    res.json(result.rows);
+  } catch (err) {
+    console.log(err.message);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
+});
+
+app.post("/api/resumes", async (req, res) => {
+  try {
+    const { title, content } = req.body;
+
+    const result = await pool.query(
+      "INSERT INTO resumes(title, content) VALUES($1, $2) RETURNING *",
+      [title || "My Resume", JSON.stringify(content || {})]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.log(err.message);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
+});
+
+app.get("/api/templates", (req, res) => {
+  res.json([
+    {
+      id: 1,
+      name: "Modern Template",
+    },
+    {
+      id: 2,
+      name: "Minimal Template",
+    },
+    {
+      id: 3,
+      name: "Professional Template",
+    },
+  ]);
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
