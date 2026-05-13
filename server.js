@@ -39,31 +39,46 @@ app.post("/api/auth/register", (req, res) => {
 });
 
 app.post("/api/auth/login", async (req, res) => {
-  const { email, password } = req.body;
-
   try {
-    const user = await pool.query(
+    const { email, password } = req.body;
+
+    const result = await pool.query(
       "SELECT * FROM users WHERE email = $1",
       [email]
     );
 
-    if (user.rows.length === 0) {
+    if (result.rows.length === 0) {
       return res.status(401).json({
-        message: "Invalid email",
+        message: "User not found",
       });
     }
+
+    const user = result.rows[0];
 
     res.json({
       success: true,
       token: "dummy_token",
-      user: user.rows[0],
+      user,
     });
+
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
+
     res.status(500).json({
       message: "Server error",
+      error: err.message,
     });
   }
+});
+app.get("/api/auth/me", (req, res) => {
+  res.json({
+    success: true,
+    user: {
+      id: 1,
+      name: "Jagadeesh",
+      email: "jagadeesh2006r@gmail.com",
+    },
+  });
 });
 
 const PORT = process.env.PORT || 5000;
