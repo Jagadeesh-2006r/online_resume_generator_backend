@@ -32,6 +32,11 @@ app.get("/users", async (req, res) => {
     console.log(err.message);
   }
 });
+app.post("/api/auth/register", (req, res) => {
+  res.json({
+    message: "Registration API working",
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
