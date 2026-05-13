@@ -38,6 +38,34 @@ app.post("/api/auth/register", (req, res) => {
   });
 });
 
+app.post("/api/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await pool.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
+    );
+
+    if (user.rows.length === 0) {
+      return res.status(401).json({
+        message: "Invalid email",
+      });
+    }
+
+    res.json({
+      success: true,
+      token: "dummy_token",
+      user: user.rows[0],
+    });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
