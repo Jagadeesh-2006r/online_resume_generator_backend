@@ -8,7 +8,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "online-resume-generator-frontend-ql.vercel.app",
+    origin: "https://online-resume-generator-frontend-ql.vercel.app",
   })
 );
 app.use(express.json());
